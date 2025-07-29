@@ -1,6 +1,8 @@
 version: "3"
 services:
   init-clickhouse:
+    build:
+      context: /deploy/docker
     networks:
       - signoz-net
     restart: on-failure
@@ -25,6 +27,8 @@ services:
     volumes:
       - ./common/clickhouse/user_scripts:/var/lib/clickhouse/user_scripts/
   zookeeper-1:
+    build:
+      context: /deploy/docker
     networks:
       - signoz-net
     restart: unless-stopped
@@ -59,6 +63,8 @@ services:
       - ZOO_ENABLE_PROMETHEUS_METRICS=yes
       - ZOO_PROMETHEUS_METRICS_PORT_NUMBER=9141
   clickhouse:
+    build:
+      context: /deploy/docker
     networks:
       - signoz-net
     restart: unless-stopped
@@ -107,6 +113,8 @@ services:
       - clickhouse:/var/lib/clickhouse/
       # - ../common/clickhouse/storage.xml:/etc/clickhouse-server/config.d/storage.xml
   signoz:
+    build:
+      context: /deploy/docker
     networks:
       - signoz-net
     restart: unless-stopped
@@ -151,6 +159,8 @@ services:
       timeout: 5s
       retries: 3
   otel-collector:
+    build:
+      context: /deploy/docker
     networks:
       - signoz-net
     restart: unless-stopped
@@ -183,6 +193,8 @@ services:
       - "4317:4317" # OTLP gRPC receiver
       - "4318:4318" # OTLP HTTP receiver
   schema-migrator-sync:
+    build:
+      context: /deploy/docker
     networks:
       - signoz-net
     restart: on-failure
@@ -200,6 +212,8 @@ services:
       clickhouse:
         condition: service_healthy
   schema-migrator-async:
+    build:
+      context: /deploy/docker
     networks:
       - signoz-net
     restart: on-failure
