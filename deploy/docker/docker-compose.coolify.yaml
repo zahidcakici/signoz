@@ -104,15 +104,23 @@ services:
     #   - "9181:9181"
     volumes:
       - type: bind
-        source: ./clickhouse-config
-        target: /etc/clickhouse-server
-        is_directory: true
+        source: ./common/clickhouse/config.xml
+        target: /etc/clickhouse-server/config.xml
+      - type: bind
+        source: ./common/clickhouse/users.xml
+        target: /etc/clickhouse-server/users.xml
+      - type: bind
+        source: ./common/clickhouse/custom-function.xml
+        target: /etc/clickhouse-server/custom-function.xml
       - type: bind
         source: ./common/clickhouse/user_scripts
         target: /var/lib/clickhouse/user_scripts
         is_directory: true
+      - type: bind
+        source: ./common/clickhouse/cluster.xml
+        target: /etc/clickhouse-server/config.d/cluster.xml
       - clickhouse:/var/lib/clickhouse/
-      # - ../common/clickhouse/storage.xml:/etc/clickhouse-server/config.d/storage.xml
+      # - ./common/clickhouse/storage.xml:/etc/clickhouse-server/config.d/storage.xml
   signoz:
     networks:
       - signoz-net
